@@ -1,0 +1,4 @@
+#!/usr/bin/zsh
+
+echo 'Hello, world!'
+z-log info 'test'

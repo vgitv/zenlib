@@ -1,0 +1,31 @@
+#!/usr/bin/zsh
+
+# Search using fzf through all files tracked by the bareconfig repository
+
+local previewer
+if command -v batcat > /dev/null 2>&1; then
+    # on ubuntu
+    previewer=batcat
+elif command -v bat > /dev/null 2>&1; then
+    # on arch
+    previewer=bat
+else
+    echo 'ERROR: please install batcat'
+    return 1
+fi
+
+filepath="$(
+    git --git-dir="${BARECONFIG:-$HOME/.local/share/bareconfig}" --work-tree="$HOME" \
+    ls-tree -r --name-only --full-name --full-tree master | \
+    fzf --layout=reverse --scrollbar='█' --preview="$previewer --color=always --style=plain $HOME/{}"
+)"
+
+# Dont do anything if no file selected
+if [[ -z "$filepath" ]]; then
+    return
+fi
+
+full_filepath="$HOME/$filepath"
+pushd "$(dirname "$full_filepath")"
+$EDITOR "$full_filepath"
+popd

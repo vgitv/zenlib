@@ -1,0 +1,11 @@
+#!/usr/bin/zsh
+
+declare -A color
+color[debug]='\033[1;37m'
+color[info]='\033[1;32m'
+color[warning]='\033[1;33m'
+color[error]='\033[1;31m'
+
+level="$1" && shift
+
+echo -e "${color[$level]}$(date '+%Y-%m-%d %H:%M:%S') - ${level:u} - $*\033[0m"
