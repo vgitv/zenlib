@@ -1,5 +1,10 @@
 #!/usr/bin/zsh
 
+setopt localoptions
+setopt nounset
+setopt pipefail
+setopt errreturn
+
 # Search using fzf through all files tracked by the bareconfig repository
 
 local previewer

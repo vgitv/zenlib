@@ -15,9 +15,11 @@ function _create {
         return 1
     fi
 
-    echo -e '#!/usr/bin/zsh\n' > "functions/$filename"
+    set -x
+    cp template/func "functions/$filename"
     chmod 750 "functions/$filename"
     $EDITOR "functions/$filename"
+    set +x
 }
 
 _create

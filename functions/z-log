@@ -1,5 +1,10 @@
 #!/usr/bin/zsh
 
+setopt localoptions
+setopt nounset
+setopt pipefail
+setopt errreturn
+
 declare -A color
 color[debug]='\033[1;37m'
 color[info]='\033[1;32m'
