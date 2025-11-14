@@ -1,2 +1,3 @@
-fpath=("$HOME/.config/zsh/zenlib/functions.zwc" $fpath)
-autoload -Uz "$HOME/.config/zsh/zenlib/functions"/*(.:t)
+# This file must be sourced because it's modifying the user current shell
+
+fpath=("$HOME/.local/share/zsh/zenlib/functions.zwc" $fpath)
