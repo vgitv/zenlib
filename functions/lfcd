@@ -1,0 +1,8 @@
+#!/usr/bin/zsh
+
+setopt localoptions
+setopt nounset
+setopt pipefail
+setopt errreturn
+
+cd "$(command lf -print-last-dir "$@")"
