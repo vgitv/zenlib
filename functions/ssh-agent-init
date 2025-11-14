@@ -1,0 +1,7 @@
+#!/usr/bin/zsh
+
+setopt localoptions
+setopt nounset
+setopt pipefail
+setopt errreturn
+
