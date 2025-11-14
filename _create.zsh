@@ -19,7 +19,7 @@ if ! command -v _create_zenlib_func > /dev/null 2>&1; then
         fi
 
         set -x
-        cp template/func "functions/$filename"
+        cp templates/func "functions/$filename"
         chmod 750 "functions/$filename"
         $EDITOR "functions/$filename"
         set +x
