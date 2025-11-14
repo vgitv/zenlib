@@ -1,9 +1,6 @@
 #!/usr/bin/zsh
-
-setopt localoptions
-setopt nounset
-setopt pipefail
-setopt errreturn
+emulate -L zsh
+setopt nounset pipefail errreturn
 
 declare -A color
 color[debug]='\033[1;37m'

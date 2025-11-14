@@ -1,8 +1,5 @@
 #!/usr/bin/zsh
-
-setopt localoptions
-setopt nounset
-setopt pipefail
-setopt errreturn
+emulate -L zsh
+setopt nounset pipefail errreturn
 
 cd "$(command lf -print-last-dir "$@")"

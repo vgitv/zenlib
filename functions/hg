@@ -1,9 +1,6 @@
 #!/usr/bin/zsh
-
-setopt localoptions
-setopt nounset
-setopt pipefail
-setopt errreturn
+emulate -L zsh
+setopt nounset pipefail errreturn
 
 remote="$(git remote -v | tail -n 1 | awk '{ print $2 }')"
 if [[ ! $remote =~ https ]]; then

@@ -1,9 +1,6 @@
 #!/usr/bin/zsh
-
-setopt localoptions
-setopt nounset
-setopt pipefail
-setopt errreturn
+emulate -L zsh
+setopt nounset pipefail errreturn
 
 # Select a Git repository using fzf and go to that directory. If it's a
 # Python project driven by poetry, try to source the virtual environment.

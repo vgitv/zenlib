@@ -1,9 +1,6 @@
 #!/usr/bin/zsh
-
-setopt localoptions
-setopt nounset
-setopt pipefail
-setopt errreturn
+emulate -L zsh
+setopt nounset pipefail errreturn
 
 REPO_LIST="${XDG_DATA_HOME:-$HOME/.local/share}/repo_list.json"
 FZF_ARGS=(--height=12 --prompt=' Github ❯ ' --layout=reverse --scrollbar='█' --delimiter='/' '--nth=-1')

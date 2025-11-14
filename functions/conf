@@ -1,9 +1,6 @@
 #!/usr/bin/zsh
-
-setopt localoptions
-setopt nounset
-setopt pipefail
-setopt errreturn
+emulate -L zsh
+setopt nounset pipefail errreturn
 
 # Search using fzf through all files tracked by the bareconfig repository
 
