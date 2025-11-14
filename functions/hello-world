@@ -1,9 +1,0 @@
-#!/usr/bin/zsh
-
-setopt localoptions
-setopt nounset
-setopt pipefail
-setopt errreturn
-
-echo 'Hello, world!'
-z-log info 'test'
