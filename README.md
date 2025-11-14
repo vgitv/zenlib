@@ -30,3 +30,14 @@ cd zenlib
 git pull
 make
 ```
+
+Uninstall:
+
+```sh
+cd zenlib
+make clean
+
+# Remove the repository itself
+cd ..
+rm -rf zenlib
+```
