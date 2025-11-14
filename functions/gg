@@ -1,0 +1,33 @@
+#!/usr/bin/zsh
+
+setopt localoptions
+setopt nounset
+setopt pipefail
+setopt errreturn
+
+# Select a Git repository using fzf and go to that directory. If it's a
+# Python project driven by poetry, try to source the virtual environment.
+
+if [[ -z ${ZENLIB_REPO_LOCATIONS:-} ]]; then
+    zlog error 'You should define an array named ZENLIB_REPO_LOCATIONS to use this function'
+    return 1
+fi
+
+repo="$(find "${ZENLIB_REPO_LOCATIONS[@]}" -maxdepth 1 -mindepth 1 -type d | sed -E "s;^${HOME};~;" | fzf --height=12 --layout=reverse --scrollbar='█')"
+
+# Dont do anything if nothing is selected
+if [[ -z "$repo" ]]; then
+    return
+fi
+
+cd "${repo/\~/$HOME}"
+
+# Try to deactivate Python venv
+if command -v deactivate > /dev/null 2>&1; then
+    deactivate
+fi
+
+# Try to source new Python venv
+if [[ -f pyproject.toml ]] && [[ -d "$(poetry env info --path)" ]]; then
+    source "$(poetry env info --path)"/bin/activate
+fi
