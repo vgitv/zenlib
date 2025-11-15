@@ -2,3 +2,15 @@
 emulate -L zsh
 setopt nounset pipefail errreturn
 
+SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
+if [[ -f ${SSH_AGENT_ENV} ]]; then
+    source "$SSH_AGENT_ENV" > /dev/null
+fi
+
+function ssh-agent-init {
+    if [[ ! -f "$SSH_AGENT_ENV" ]]; then
+        ssh-agent -t 10h > "$SSH_AGENT_ENV"
+        source "$SSH_AGENT_ENV" > /dev/null
+        ssh-add ~/.ssh/id_ed25519
+    fi
+}
