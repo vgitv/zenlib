@@ -2,15 +2,11 @@
 emulate -L zsh
 setopt nounset pipefail errreturn
 
-SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
-if [[ -f ${SSH_AGENT_ENV} ]]; then
-    source "$SSH_AGENT_ENV" > /dev/null
-fi
+# Keep in mind that all zenlib-*.zsh will be automatically sourced by zenlib
+SSH_AGENT_ENV="$XDG_RUNTIME_DIR/zenlib-ssh-agent.zsh"
 
-function ssh-agent-init {
-    if [[ ! -f "$SSH_AGENT_ENV" ]]; then
-        ssh-agent -t 10h > "$SSH_AGENT_ENV"
-        source "$SSH_AGENT_ENV" > /dev/null
-        ssh-add ~/.ssh/id_ed25519
-    fi
-}
+if [[ ! -f "$SSH_AGENT_ENV" ]]; then
+    ssh-agent -t 10h > "$SSH_AGENT_ENV"
+    source "$SSH_AGENT_ENV" > /dev/null
+    ssh-add ~/.ssh/id_ed25519
+fi
