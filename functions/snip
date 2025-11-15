@@ -2,3 +2,4 @@
 emulate -L zsh
 setopt nounset pipefail errreturn
 
+print -z "$(fzf < ~/.local/share/zenlib_snippets.zsh)"

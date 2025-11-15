@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/bin/zsh
 emulate -L zsh
 setopt nounset pipefail errreturn
 
