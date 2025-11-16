@@ -1,0 +1,27 @@
+#!/bin/zsh
+emulate -L zsh
+setopt nounset pipefail errreturn
+
+if command -v pyenv > /dev/null 2>&1; then
+    export PYENV_ROOT="${HOME}/.local/share/pyenv"
+
+    # pyenv executable could be either in $PYENV_ROOT/bin or in /usr/bin (if installed from package manager)
+    if [[ -d $PYENV_ROOT/bin ]]; then
+        export PATH="$PYENV_ROOT/bin:$PATH"
+    fi
+
+    export VIRTUAL_ENV_DISABLE_PROMPT=1
+    eval "$(pyenv init -)"
+
+    # One can load pyenv-virtualenv automatically by adding
+    # the following:
+    # eval "$(pyenv virtualenv-init -)"
+    # but it makes the shell very slow.
+
+    # When opening terminal inside vim (or any other terminal instance), it does
+    # not inherit venv activation. This will fix the problem, but there is maybe a
+    # better solution. Needs to be after pyenv init.
+    if [[ -n "${VIRTUAL_ENV:-}" ]]; then
+        source "$VIRTUAL_ENV/bin/activate"
+    fi
+fi
