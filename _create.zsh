@@ -13,15 +13,15 @@ if ! command -v _create_zenlib_func > /dev/null 2>&1; then
             return 1
         fi
 
-        if [[ -f "functions/$filename" ]]; then
+        if [[ -f "funcs/$filename" ]]; then
             echo "ERROR: file '$filename' already exists!"
             return 1
         fi
 
         set -x
-        cp templates/func "functions/$filename"
-        chmod 750 "functions/$filename"
-        $EDITOR "functions/$filename"
+        cp templates/func "funcs/$filename"
+        chmod 750 "funcs/$filename"
+        $EDITOR "funcs/$filename"
         set +x
     }
 fi

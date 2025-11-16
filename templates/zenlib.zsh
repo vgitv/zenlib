@@ -9,7 +9,7 @@ function _zenlib_init {
         source "$f" > /dev/null
     done
 
-    fpath=("$HOME/.local/share/zsh/zenlib/functions.zwc" $fpath)
+    fpath=("$HOME/.local/share/zsh/zenlib/funcs.zwc" $fpath)
 }
 
 _zenlib_init
