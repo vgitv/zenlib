@@ -6,10 +6,11 @@ function _zenlib_init {
 
     # nullglob is important if no zenlib-*.zsh are found
     for f in "$XDG_RUNTIME_DIR"/zenlib-*.zsh; do
-        source "$f" > /dev/null
+        source "$f" > /dev/null || true
     done
 
     fpath=("$HOME/.local/share/zsh/zenlib/funcs.zwc" $fpath)
+    autoload -Uz $(zcompile -t "$HOME/.local/share/zsh/zenlib/funcs.zwc" | awk -F '/' '/\// { print $2 }')
 }
 
 _zenlib_init
