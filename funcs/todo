@@ -1,0 +1,7 @@
+#!/bin/zsh
+emulate -L zsh
+setopt nounset pipefail errreturn
+
+pushd ~/Documents/todo
+"$EDITOR" todo.md
+popd

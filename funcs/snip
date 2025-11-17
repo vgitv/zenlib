@@ -2,4 +2,8 @@
 emulate -L zsh
 setopt nounset pipefail errreturn
 
-print -z "$(fzf --reverse < ~/.local/share/zenlib_snippets.zsh)"
+if [[ $# -eq 0 ]]; then
+    print -z "$(fzf --reverse < ~/.local/share/zenlib_snippets.zsh)"
+elif [[ $1 = edit ]]; then
+    $EDITOR ~/.local/share/zenlib_snippets.zsh
+fi

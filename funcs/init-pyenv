@@ -2,14 +2,14 @@
 emulate -L zsh
 setopt nounset pipefail errreturn
 
+export PYENV_ROOT="${HOME}/.local/share/pyenv"
+
+# pyenv executable could be either in $PYENV_ROOT/bin or in /usr/bin (if installed from package manager)
+if [[ -d $PYENV_ROOT/bin ]]; then
+    export PATH="$PYENV_ROOT/bin:$PATH"
+fi
+
 if command -v pyenv > /dev/null 2>&1; then
-    export PYENV_ROOT="${HOME}/.local/share/pyenv"
-
-    # pyenv executable could be either in $PYENV_ROOT/bin or in /usr/bin (if installed from package manager)
-    if [[ -d $PYENV_ROOT/bin ]]; then
-        export PATH="$PYENV_ROOT/bin:$PATH"
-    fi
-
     export VIRTUAL_ENV_DISABLE_PROMPT=1
     eval "$(pyenv init -)"
 
