@@ -2,7 +2,7 @@
 
 function _zenlib_init {
     emulate -L zsh
-    setopt nounset pipefail errreturn nullglob
+    setopt no_unset pipe_fail err_return null_glob
 
     # nullglob is important if no zenlib-*.zsh are found
     for f in "$XDG_RUNTIME_DIR"/zenlib-*.zsh; do
