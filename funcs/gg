@@ -36,8 +36,12 @@ if command -v deactivate > /dev/null 2>&1; then
 fi
 
 # Try to source new Python venv
-if [[ -f pyproject.toml ]] && [[ -d "$(poetry env info --path)" ]]; then
+if [[ -f pyproject.toml && -d "$(poetry env info --path)" ]]; then
     emulate -L zsh; source "$(poetry env info --path)"/bin/activate
+elif [[ -d .venv ]]; then
+    emulate -L zsh; source .venv/bin/activate
+elif [[ -d venv ]]; then
+    emulate -L zsh; source venv/bin/activate
 fi
 
-echo -e "\n  ${PWD/$HOME/~}   "
+print "\n  ${PWD/$HOME/~}   "

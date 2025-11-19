@@ -10,4 +10,4 @@ color[error]='\033[1;31m'
 
 typeset level="$1" && shift
 
-echo -e "${color[$level]}$(date '+%Y-%m-%d %H:%M:%S') - ${level:u} - $*\033[0m"
+print "${color[$level]}$(date '+%Y-%m-%d %H:%M:%S') - ${level:u} - $*\033[0m"
