@@ -1,11 +1,17 @@
 #!/bin/zsh
 emulate -L zsh
-setopt nounset pipefail errreturn
+setopt no_unset pipe_fail err_return warn_create_global
 
-REPO_LIST="${XDG_DATA_HOME:-$HOME/.local/share}/repo_list.json"
+typeset REPO_LIST="${XDG_DATA_HOME:-$HOME/.local/share}/repo_list.json"
+
+typeset -a FZF_ARGS
 FZF_ARGS=(--height=12 --prompt=' Github ❯ ' --layout=reverse --scrollbar='█' --delimiter='/' '--nth=-1')
-repo="$(jq -r '.[] | "\(.owner.login)/\(.name)"' "$REPO_LIST" | fzf "${FZF_ARGS[@]}")"
+
+typeset repo="$(jq -r '.[] | "\(.owner.login)/\(.name)"' "$REPO_LIST" | fzf "${FZF_ARGS[@]}")"
 [[ -z "$repo" ]] && return
-repo_name="$(basename "${repo%.git}")"
-git clone "git@github.com:${repo}" ~/Code/"$repo_name"
+
+typeset repo_name="$(basename "${repo%.git}")"
+if [[ ! -d ~/Code/"$repo_name" ]]; then
+    git clone "git@github.com:${repo}" ~/Code/"$repo_name"
+fi
 cd ~/Code/"$repo_name"

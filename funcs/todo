@@ -1,6 +1,6 @@
 #!/bin/zsh
 emulate -L zsh
-setopt nounset pipefail errreturn
+setopt no_unset pipe_fail err_return warn_create_global
 
 pushd ~/Documents/todo
 "$EDITOR" todo.md

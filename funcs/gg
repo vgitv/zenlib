@@ -1,6 +1,6 @@
 #!/bin/zsh
 emulate -L zsh
-setopt nounset pipefail errreturn
+setopt no_unset pipe_fail err_return warn_create_global
 
 # Select a Git repository using fzf and go to that directory. If it's a
 # Python project driven by poetry, try to source the virtual environment.
@@ -10,14 +10,14 @@ if [[ -z ${ZENLIB_REPO_LOCATIONS:-} ]]; then
     return 1
 fi
 
-repo="$(find "${ZENLIB_REPO_LOCATIONS[@]}" -maxdepth 1 -mindepth 1 -type d | sed -E "s;^${HOME};~;" | fzf --height=12 --layout=reverse --scrollbar='█')"
+typeset repo="$(find "${ZENLIB_REPO_LOCATIONS[@]}" -maxdepth 1 -mindepth 1 -type d | fzf -d '/' --with-nth='-1' --height=20 --layout=reverse --scrollbar='█' --preview='tree -L 1 -C --dirsfirst {}')"
 
 # Dont do anything if nothing is selected
 if [[ -z "$repo" ]]; then
     return
 fi
 
-cd "${repo/\~/$HOME}"
+cd "$repo"
 
 # Try to deactivate Python venv
 if command -v deactivate > /dev/null 2>&1; then
@@ -26,5 +26,7 @@ fi
 
 # Try to source new Python venv
 if [[ -f pyproject.toml ]] && [[ -d "$(poetry env info --path)" ]]; then
-    source "$(poetry env info --path)"/bin/activate
+    emulate -L zsh; source "$(poetry env info --path)"/bin/activate
 fi
+
+echo "  ${PWD/$HOME/~}"

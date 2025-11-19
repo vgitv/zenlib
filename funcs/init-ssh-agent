@@ -1,10 +1,10 @@
 #!/bin/zsh
 emulate -L zsh
-setopt nounset pipefail errreturn
+setopt no_unset pipe_fail err_return warn_create_global
 
 # Keep in mind that all zenlib-*.zsh will be automatically sourced by zenlib
 # It is important to preserve agent state across shell sessions
-SSH_AGENT_ENV="$XDG_RUNTIME_DIR/zenlib-ssh-agent.zsh"
+typeset -g SSH_AGENT_ENV="$XDG_RUNTIME_DIR/zenlib-ssh-agent.zsh"
 
 # If the agent expires, it should be launch again
 if ! pgrep -u "$USER" ssh-agent > /dev/null || [[ ! -f "$SSH_AGENT_ENV" ]]; then

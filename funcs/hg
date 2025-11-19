@@ -1,8 +1,8 @@
 #!/bin/zsh
 emulate -L zsh
-setopt nounset pipefail errreturn
+setopt no_unset pipe_fail err_return warn_create_global
 
-remote="$(git remote -v | tail -n 1 | awk '{ print $2 }')"
+typeset remote="$(git remote -v | tail -n 1 | awk '{ print $2 }')"
 if [[ ! $remote =~ https ]]; then
     remote="${remote/git@github.com:/https://github.com/}"
 fi

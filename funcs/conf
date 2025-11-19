@@ -1,6 +1,6 @@
 #!/bin/zsh
 emulate -L zsh
-setopt nounset pipefail errreturn
+setopt no_unset pipe_fail err_return warn_create_global
 
 # Search using fzf through all files tracked by the bareconfig repository
 
@@ -16,7 +16,7 @@ else
     return 1
 fi
 
-filepath="$(
+typeset filepath="$(
     git --git-dir="${BARECONFIG:-$HOME/.local/share/bareconfig}" --work-tree="$HOME" \
     ls-tree -r --name-only --full-name --full-tree master | \
     fzf --layout=reverse --scrollbar='█' --preview="$previewer --color=always --style=plain $HOME/{}"
@@ -27,7 +27,7 @@ if [[ -z "$filepath" ]]; then
     return
 fi
 
-full_filepath="$HOME/$filepath"
+typeset full_filepath="$HOME/$filepath"
 pushd "$(dirname "$full_filepath")"
 $EDITOR "$full_filepath"
 popd
