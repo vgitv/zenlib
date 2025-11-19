@@ -16,11 +16,10 @@ else
     return 1
 fi
 
-typeset filepath="$(
-    git --git-dir="${BARECONFIG:-$HOME/.local/share/bareconfig}" --work-tree="$HOME" \
-    ls-tree -r --name-only --full-name --full-tree master | \
-    fzf --layout=reverse --scrollbar='█' --preview="$previewer --color=always --style=plain $HOME/{}"
-)"
+typeset -a config_files
+config_files=$(git --git-dir="${BARECONFIG:-$HOME/.local/share/bareconfig}" --work-tree="$HOME" ls-tree -r --name-only --full-name --full-tree master)
+
+typeset filepath="$(print -l "${config_files[@]}" | fzf --layout=reverse --scrollbar='█' --preview="$previewer --color=always --style=plain $HOME/{}")"
 
 # Dont do anything if no file selected
 if [[ -z "$filepath" ]]; then
