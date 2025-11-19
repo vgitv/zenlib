@@ -5,12 +5,23 @@ setopt no_unset pipe_fail err_return warn_create_global
 # Select a Git repository using fzf and go to that directory. If it's a
 # Python project driven by poetry, try to source the virtual environment.
 
-if [[ -z ${ZENLIB_REPO_LOCATIONS:-} ]]; then
-    zlog error 'You should define an array named ZENLIB_REPO_LOCATIONS to use this function'
+if [[ -z ${ZENLIB_GG_REPOLOC:-} ]]; then
+    zlog error 'You should define an array named ZENLIB_GG_REPOLOC to use this function'
     return 1
 fi
 
-typeset repo="$(find "${ZENLIB_REPO_LOCATIONS[@]}" -maxdepth 1 -mindepth 1 -type d | fzf -d '/' --with-nth='-1' --height=20 --layout=reverse --scrollbar='█' --preview='tree -L 1 -C --dirsfirst {}')"
+typeset repo="$(
+    {
+        typeset dir
+        for dir in $ZENLIB_GG_REPOLOC; do
+            print -l "$dir"/*(/)
+        done
+
+        if [[ -n ${ZENLIB_GG_SINGLES:-} ]]; then
+            print -l $ZENLIB_GG_SINGLES
+        fi
+    } | fzf -d '/' --with-nth='-1' --height=20 --layout=reverse --scrollbar='█' --preview='tree -L 1 -C --dirsfirst {}'
+)"
 
 # Dont do anything if nothing is selected
 if [[ -z "$repo" ]]; then
@@ -29,4 +40,4 @@ if [[ -f pyproject.toml ]] && [[ -d "$(poetry env info --path)" ]]; then
     emulate -L zsh; source "$(poetry env info --path)"/bin/activate
 fi
 
-echo "  ${PWD/$HOME/~}"
+echo -e "\n  ${PWD/$HOME/~}   "
