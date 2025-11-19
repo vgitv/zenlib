@@ -14,14 +14,14 @@ typeset -a all_repos
 
 typeset dir
 for dir in $ZENLIB_GG_REPOLOC; do
-    all_repos+=("$dir"/*(/))
+    all_repos+=($dir/*(/))
 done
 
 if [[ -n ${ZENLIB_GG_SINGLES:-} ]]; then
-    all_repos+=("${ZENLIB_GG_SINGLES[@]}")
+    all_repos+=($ZENLIB_GG_SINGLES)
 fi
 
-typeset repo="$(print -l "${all_repos[@]}" | fzf -d '/' --with-nth='-1' --height=20 --layout=reverse --scrollbar='█' --preview='tree -L 1 -C --dirsfirst {}')"
+typeset repo="$(print -l $all_repos | fzf -d '/' --with-nth='-1' --height=20 --layout=reverse --scrollbar='█' --preview='tree -L 1 -C --dirsfirst {}')"
 
 # Dont do anything if nothing is selected
 if [[ -z "$repo" ]]; then
