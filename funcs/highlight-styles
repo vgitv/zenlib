@@ -1,0 +1,10 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+typeset -a styles
+typeset key
+for key in ${(k)ZSH_HIGHLIGHT_STYLES}; do
+    styles+=("${(r(30))key} ${ZSH_HIGHLIGHT_STYLES[$key]}")
+done
+print -l $styles | sort
