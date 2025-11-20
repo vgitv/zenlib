@@ -5,18 +5,19 @@ setopt no_unset pipe_fail err_return warn_create_global
 # Keep in mind that all zenlib-*.zsh will be automatically sourced by zenlib
 # It is important to preserve agent state across shell sessions
 typeset -g SSH_AGENT_ENV="$XDG_RUNTIME_DIR/zenlib-ssh-agent.zsh"
+typeset public_key_hash="$(awk '{ print $2 }' ~/.ssh/id_ed25519.pub)"
 
 # It is important to keep both conditions:
 #   1. if the ssh-agent is killed, the SSH_AGENT_ENV file will persist, but we have to run the agent again
 #   2. if another agent exists, it is nevertheless important to run another one that will be tracked in the shell
 if ! pgrep -u "$USER" ssh-agent > /dev/null || [[ ! -f "$SSH_AGENT_ENV" ]]; then
     ssh-agent -t 10h > "$SSH_AGENT_ENV"
+    setopt no_warn_create_global
     source "$SSH_AGENT_ENV" > /dev/null
 fi
 
 # If the lifetime is reached for the identity, it should be added again.
 # Note that in this case the ssh-agent is still running, no need to launch another one (the agent does not expire).
-typeset public_key_hash="$(awk '{ print $2 }' ~/.ssh/id_ed25519.pub)"
 if ! ssh-add -L | grep -q "$public_key_hash"; then
     ssh-add ~/.ssh/id_ed25519
 fi
