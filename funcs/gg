@@ -44,4 +44,4 @@ elif [[ -d venv ]]; then
     emulate -L zsh; source venv/bin/activate
 fi
 
-print "\n  ${PWD/$HOME/~}   "
+print -D "$PWD"
