@@ -1,0 +1,85 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+# tokyonight moon palette
+typeset -A tokyonight
+tokyonight=(
+    bg_ '#222436'
+    bg_dark '#1e2030'
+    bg_dark1 '#191B29'
+    bg_highlight '#2f334d'
+    blue '#82aaff'
+    blue0 '#3e68d7'
+    blue1 '#65bcff'
+    blue2 '#0db9d7'
+    blue5 '#89ddff'
+    blue6 '#b4f9f8'
+    blue7 '#394b70'
+    comment '#636da6'
+    cyan '#86e1fc'
+    dark3 '#545c7e'
+    dark5 '#737aa2'
+    fg_ '#c8d3f5'
+    fg_dark '#828bb8'
+    fg_gutter '#3b4261'
+    green '#c3e88d'
+    green1 '#4fd6be'
+    green2 '#41a6b5'
+    magenta '#c099ff'
+    magenta2 '#ff007c'
+    orange '#ff966c'
+    purple '#fca7ea'
+    red '#ff757f'
+    red1 '#c53b53'
+    teal '#4fd6be'
+    terminal_black '#444a73'
+    yellow '#ffc777'
+)
+
+# I already know the functions and aliases I defined, no need to differenciate them
+ZSH_HIGHLIGHT_STYLES[command]="fg=${tokyonight[blue]},bold"
+ZSH_HIGHLIGHT_STYLES[function]="fg=${tokyonight[blue]},bold"
+ZSH_HIGHLIGHT_STYLES[alias]="fg=${tokyonight[blue]},bold"
+
+# Actually, precommands are builtins, so it make sense to have the same color for both
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=${tokyonight[blue1]},bold"
+ZSH_HIGHLIGHT_STYLES[precommand]="fg=${tokyonight[blue1]},underline"
+
+# Pretty options
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=${tokyonight[yellow]}"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=${tokyonight[yellow]}"
+
+# Reserved words like if / then / else / for etc.
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=${tokyonight[magenta]},bold"
+
+# Strings
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=${tokyonight[green]}"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="fg=${tokyonight[green]}"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=${tokyonight[green]}"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]="fg=${tokyonight[green]}"
+
+# Comments
+ZSH_HIGHLIGHT_STYLES[comment]="fg=${tokyonight[comment]}"
+
+ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=${tokyonight[blue5]}"
+ZSH_HIGHLIGHT_STYLES[redirection]="fg=${tokyonight[blue5]}"
+
+ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=${tokyonight[orange]}"
+ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=${tokyonight[orange]}"
+
+ZSH_HIGHLIGHT_STYLES[bracket-error]="fg=${tokyonight[red]},bold"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=${tokyonight[red]},bold"
+
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=${tokyonight[magenta2]}"
+ZSH_HIGHLIGHT_STYLES[global-alias]="fg=${tokyonight[magenta2]}"
+
+# Brackets if "brackets" highlighter is set
+ZSH_HIGHLIGHT_STYLES[bracket-level-1]="fg=${tokyonight[blue]},bold"
+ZSH_HIGHLIGHT_STYLES[bracket-level-2]="fg=${tokyonight[green]},bold"
+ZSH_HIGHLIGHT_STYLES[bracket-level-3]="fg=${tokyonight[magenta]},bold"
+ZSH_HIGHLIGHT_STYLES[bracket-level-4]="fg=${tokyonight[yellow]},bold"
+ZSH_HIGHLIGHT_STYLES[bracket-level-5]="fg=${tokyonight[cyan]},bold"
+
+# Autodirectory if auto_cd is set in zsh
+ZSH_HIGHLIGHT_STYLES[autodirectory]="fg=blue,bold,underline"
