@@ -87,4 +87,11 @@ typeset -g RE_MATCH_PCRE=1
 typeset -gA ZSH_HIGHLIGHT_REGEXP
 
 # NOTE hopefully in future versions of zsh-zyntax-highlighting variables will be highlighted natively
-ZSH_HIGHLIGHT_REGEXP+=('\$\{?#?\w+(\[.\])?\}?' "fg=${tokyonight[orange]}")
+# Should work with the following:
+#   $var
+#   ${var}
+#   ${#var}
+#   ${var[@]}
+#   ${var[1]}
+#   ${var:u:t}
+ZSH_HIGHLIGHT_REGEXP+=('\$\{?#?\w+(\[.\])?(:\w)*\}?' "fg=${tokyonight[orange]}")
