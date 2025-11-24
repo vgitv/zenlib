@@ -5,7 +5,7 @@ setopt no_unset pipe_fail err_return warn_create_global
 # tokyonight moon palette
 typeset -A tokyonight
 tokyonight=(
-    bg_ '#222436'
+    # bg '#222436'
     bg_dark '#1e2030'
     bg_dark1 '#191B29'
     bg_highlight '#2f334d'
@@ -20,7 +20,7 @@ tokyonight=(
     cyan '#86e1fc'
     dark3 '#545c7e'
     dark5 '#737aa2'
-    fg_ '#c8d3f5'
+    # fg '#c8d3f5'
     fg_dark '#828bb8'
     fg_gutter '#3b4261'
     green '#c3e88d'
@@ -37,13 +37,13 @@ tokyonight=(
     yellow '#ffc777'
 )
 
-# I already know the functions and aliases I defined, no need to differenciate them
-ZSH_HIGHLIGHT_STYLES[command]="fg=${tokyonight[blue]},bold"
-ZSH_HIGHLIGHT_STYLES[function]="fg=${tokyonight[blue]},bold"
-ZSH_HIGHLIGHT_STYLES[alias]="fg=${tokyonight[blue]},bold"
+# I already know the aliases I defined, no need to differenciate them
+ZSH_HIGHLIGHT_STYLES[command]="fg=${tokyonight[blue]}"
+ZSH_HIGHLIGHT_STYLES[alias]="fg=${tokyonight[blue]}"
 
 # Actually, precommands are builtins, so it make sense to have the same color for both
-ZSH_HIGHLIGHT_STYLES[builtin]="fg=${tokyonight[blue1]},bold"
+ZSH_HIGHLIGHT_STYLES[function]="fg=${tokyonight[blue1]}"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=${tokyonight[blue1]}"
 ZSH_HIGHLIGHT_STYLES[precommand]="fg=${tokyonight[blue1]},underline"
 
 # Pretty options
@@ -71,15 +71,20 @@ ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=${tokyonight[orange]}"
 ZSH_HIGHLIGHT_STYLES[bracket-error]="fg=${tokyonight[red]},bold"
 ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=${tokyonight[red]},bold"
 
-ZSH_HIGHLIGHT_STYLES[globbing]="fg=${tokyonight[magenta2]}"
-ZSH_HIGHLIGHT_STYLES[global-alias]="fg=${tokyonight[magenta2]}"
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=${tokyonight[teal]}"
+ZSH_HIGHLIGHT_STYLES[path]="fg=${tokyonight[teal]}"
+ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=${tokyonight[fg_dark]},bold"
 
-# Brackets if "brackets" highlighter is set
-ZSH_HIGHLIGHT_STYLES[bracket-level-1]="fg=${tokyonight[blue]},bold"
-ZSH_HIGHLIGHT_STYLES[bracket-level-2]="fg=${tokyonight[green]},bold"
-ZSH_HIGHLIGHT_STYLES[bracket-level-3]="fg=${tokyonight[magenta]},bold"
-ZSH_HIGHLIGHT_STYLES[bracket-level-4]="fg=${tokyonight[yellow]},bold"
-ZSH_HIGHLIGHT_STYLES[bracket-level-5]="fg=${tokyonight[cyan]},bold"
+ZSH_HIGHLIGHT_STYLES[global-alias]="fg=${tokyonight[magenta2]}"
 
 # Autodirectory if auto_cd is set in zsh
 ZSH_HIGHLIGHT_STYLES[autodirectory]="fg=blue,bold,underline"
+
+# Highlighters order matters: regexp should be first, as it will be overriden by the main highlighter
+# Thus for `print $HOME '$HOME'` the first $HOME will be highlighted with regexp, and the second with the main highlighter.
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(regexp $ZSH_HIGHLIGHT_HIGHLIGHTERS)
+typeset -g RE_MATCH_PCRE=1
+typeset -gA ZSH_HIGHLIGHT_REGEXP
+
+# NOTE hopefully in future versions of zsh-zyntax-highlighting variables will be highlighted natively
+ZSH_HIGHLIGHT_REGEXP+=('\$\{?#?\w+(\[.\])?\}?' "fg=${tokyonight[orange]}")
