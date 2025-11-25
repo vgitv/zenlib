@@ -24,6 +24,6 @@ if command -v pyenv > /dev/null 2>&1; then
     # not inherit venv activation. This will fix the problem, but there is maybe a
     # better solution. Needs to be after pyenv init.
     if [[ -n "${VIRTUAL_ENV:-}" ]]; then
-        source "$VIRTUAL_ENV/bin/activate"
+        emulate -L zsh; source "$VIRTUAL_ENV/bin/activate"
     fi
 fi

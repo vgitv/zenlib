@@ -73,7 +73,7 @@ ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=${tokyonight[red]},bold"
 
 ZSH_HIGHLIGHT_STYLES[globbing]="fg=${tokyonight[teal]}"
 ZSH_HIGHLIGHT_STYLES[path]="fg=${tokyonight[teal]}"
-ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=${tokyonight[fg_dark]},bold"
+ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=${tokyonight[green]},bold"
 
 ZSH_HIGHLIGHT_STYLES[global-alias]="fg=${tokyonight[magenta2]}"
 
