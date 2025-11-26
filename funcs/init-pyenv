@@ -2,6 +2,11 @@
 emulate -L zsh
 setopt no_unset pipe_fail err_return warn_create_global
 
+if [[ -n ${PYENV_SHELL:-} ]]; then
+    # pyenv already init
+    return
+fi
+
 export PYENV_ROOT="${HOME}/.local/share/pyenv"
 
 # pyenv executable could be either in $PYENV_ROOT/bin or in /usr/bin (if installed from package manager)

@@ -8,8 +8,8 @@ Zsh functions for autoloading.
 ### Installation
 
 Clone the repository wherever you want, and run the `make` command. It will
-compile the functions (using `zcompile`), create dynamically an init zsh file
-and put them both into a newly created `~/.local/share/zsh/zenlib/` directory.
+compile the functions (using `zcompile`), and put it into a newly created
+`~/.local/share/zsh/zenlib/` directory, alongside the `zenlib.zsh` file.
 
 Then source the `zenlib.zsh` file from your zshrc.
 

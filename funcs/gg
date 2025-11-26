@@ -21,11 +21,27 @@ if [[ -n ${ZENLIB_GG_SINGLES:-} ]]; then
     all_repos+=($ZENLIB_GG_SINGLES)
 fi
 
-typeset repo="$(print -l $all_repos | fzf -d '/' --with-nth='-1' --height=20 --layout=reverse --scrollbar='█' --preview='tree -L 1 -C --dirsfirst {}')"
+typeset -a fzf_args
+fzf_args=(
+    --prompt=' '
+    --delimiter='/'
+    --with-nth='-1'
+    --height=20
+    --layout=reverse
+    --scrollbar='█'
+    --preview='tree -L 1 -C --dirsfirst {}'
+)
+
+typeset repo="$(print -l $all_repos | fzf "${fzf_args[@]}")"
 
 # Dont do anything if nothing is selected
 if [[ -z "$repo" ]]; then
     return
+fi
+
+if [[ -r "$repo"/.python-version || -r "$repo"/pyproject.toml ]]; then
+    # pyenv is slow to init, I want it only when I work on python projects
+    init-pyenv
 fi
 
 cd "$repo"
