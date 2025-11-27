@@ -75,10 +75,10 @@ ZSH_HIGHLIGHT_STYLES[globbing]="fg=${tokyonight[teal]}"
 ZSH_HIGHLIGHT_STYLES[path]="fg=${tokyonight[teal]}"
 ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=${tokyonight[green]},bold"
 
-ZSH_HIGHLIGHT_STYLES[global-alias]="fg=${tokyonight[magenta2]}"
+ZSH_HIGHLIGHT_STYLES[global-alias]="fg=${tokyonight[teal]},standout"
 
 # Autodirectory if auto_cd is set in zsh
-ZSH_HIGHLIGHT_STYLES[autodirectory]="fg=blue,bold,underline"
+ZSH_HIGHLIGHT_STYLES[autodirectory]="fg=${tokyonight[blue1]},bold"
 
 # Highlighters order matters: regexp should be first, as it will be overriden by the main highlighter
 # Thus for `print $HOME '$HOME'` the first $HOME will be highlighted with regexp, and the second with the main highlighter.
