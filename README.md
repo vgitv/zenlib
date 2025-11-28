@@ -1,11 +1,11 @@
-# zenlib
+# Zenlib - Autoloaded Zsh functions
 
-### Introduction
+## Introduction
 
-Zsh functions for autoloading.
+This is a bunch of Zsh functions that I use on a daily basis.
 
 
-### Installation
+## Install
 
 Clone the repository wherever you want, and run the `make` command. It will
 compile the functions (using `zcompile`), and put it into a newly created
@@ -23,21 +23,15 @@ make
 echo 'source "$HOME/.local/share/zsh/zenlib/zenlib.zsh"' >> "${ZDOTDIR:-HOME}/.zshrc"
 ```
 
-Update:
+## Update
 
 ```sh
-cd zenlib
 git pull
 make
 ```
 
-Uninstall:
+## Uninstall
 
 ```sh
-cd zenlib
 make clean
-
-# Remove the repository itself
-cd ..
-rm -rf zenlib
 ```
