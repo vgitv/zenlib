@@ -1,0 +1,11 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+typeset remote="$(git remote -v | tail -n 1 | awk '{ print $2 }')"
+if [[ ! $remote =~ https ]]; then
+    remote="${remote/git@github.com:/https://github.com/}"
+fi
+# remove .git extention
+remote="${remote%.git}"
+$BROWSER "${remote}"

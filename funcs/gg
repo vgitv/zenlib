@@ -1,0 +1,64 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+# Select a Git repository using fzf and go to that directory. If it's a
+# Python project driven by poetry, try to source the virtual environment.
+
+if [[ -z ${ZENLIB_GG_REPOLOC:-} ]]; then
+    zlog error 'You should define an array named ZENLIB_GG_REPOLOC to use this function'
+    return 1
+fi
+
+typeset -a all_repos
+
+typeset dir
+for dir in $ZENLIB_GG_REPOLOC; do
+    all_repos+=($dir/*(/))
+done
+
+if [[ -n ${ZENLIB_GG_SINGLES:-} ]]; then
+    all_repos+=($ZENLIB_GG_SINGLES)
+fi
+
+typeset -a fzf_args
+fzf_args=(
+    --prompt='- '
+    --delimiter='/'
+    --with-nth='-1'
+    --height=20
+    --layout=reverse
+    --scrollbar='█'
+    --preview='tree -L 1 -C --dirsfirst {}'
+)
+
+typeset repo="$(print -l $all_repos | fzf "${fzf_args[@]}")"
+
+# Dont do anything if nothing is selected
+if [[ -z "$repo" ]]; then
+    return
+fi
+
+if [[ -r "$repo"/.python-version || -r "$repo"/pyproject.toml ]]; then
+    # pyenv is slow to init, I want it only when I work on python projects
+    print 'Init pyenv'
+    init-pyenv
+fi
+
+cd "$repo"
+
+# Try to deactivate Python venv
+if command -v deactivate > /dev/null 2>&1; then
+    deactivate
+fi
+
+# Try to source new Python venv
+if [[ -f pyproject.toml && -d "$(poetry env info --path)" ]]; then
+    emulate -L zsh; source "$(poetry env info --path)"/bin/activate
+elif [[ -d .venv ]]; then
+    emulate -L zsh; source .venv/bin/activate
+elif [[ -d venv ]]; then
+    emulate -L zsh; source venv/bin/activate
+fi
+
+print -D "$PWD"
