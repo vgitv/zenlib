@@ -9,6 +9,7 @@ $(targetdir)/funcs.zwc: $(targetdir) $(wildcard funcs/*)
 
 $(targetdir)/zenlib.zsh: $(targetdir) $(wildcard funcs/*) zenlib.zsh
 	cp zenlib.zsh $(targetdir)/zenlib.zsh
+	print 'autoload -Uz' funcs/*(.:t) >> $(targetdir)/zenlib.zsh
 
 $(targetdir):
 	mkdir -p $@

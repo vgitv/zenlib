@@ -10,7 +10,6 @@ function _zenlib_init {
     done
 
     fpath=("$HOME/.local/share/zsh/zenlib/funcs.zwc" $fpath)
-    autoload -Uz $(zcompile -t "$HOME/.local/share/zsh/zenlib/funcs.zwc" | awk -F '/' '/\// { print $2 }')
 }
 
 _zenlib_init
