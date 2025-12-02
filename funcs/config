@@ -30,14 +30,14 @@ if [[ $# -eq 0 ]]; then
         return
     fi
 
-    $EDITOR "$filepath"
+    $EDITOR ~/"$filepath"
 
-    if grep -q zenlib-noautocommit $filepath; then
+    if grep -q zenlib-noautocommit ~/"$filepath"; then
         print "No-autocommit label detected for $filepath"
     else
-        if git "${git_args[@]}" status --short "$filepath" | grep -q M; then
+        if git "${git_args[@]}" status --short ~/"$filepath" | grep -q M; then
             # File is modified
-            git "${git_args[@]}" add "$filepath"
+            git "${git_args[@]}" add ~/"$filepath"
             git "${git_args[@]}" commit -m "Update ${filepath}"
             print 'Changes commited'
         else
