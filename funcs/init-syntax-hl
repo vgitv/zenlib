@@ -66,6 +66,7 @@ ZSH_HIGHLIGHT_STYLES[comment]="fg=${tokyonight[comment]}"
 ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=${tokyonight[blue5]}"
 ZSH_HIGHLIGHT_STYLES[redirection]="fg=${tokyonight[blue5]}"
 ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter]="fg=${tokyonight[blue5]}"
+ZSH_HIGHLIGHT_STYLES[process-substitution-delimiter]="fg=${tokyonight[blue5]}"
 
 ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=${tokyonight[orange]}"
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=${tokyonight[orange]}"
