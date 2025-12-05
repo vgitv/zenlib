@@ -23,7 +23,7 @@ fi
 
 typeset -a fzf_args
 fzf_args=(
-    --prompt='  '
+    --prompt='→ '
     --delimiter='/'
     --with-nth='-1'
     --height=20
