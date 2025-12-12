@@ -1,16 +1,44 @@
 #!/bin/zsh
-emulate -L zsh
-setopt no_unset pipe_fail err_return warn_create_global
 
 
-typeset active='\x1b[1;36m'
-typeset inactive='\x1b[2;36m'
-typeset reset='\x1b[0m'
+# FIXME this is not ideal because we must run gconf once before being able to use completion
 
-if [[ $# -eq 0 ]]; then
-    gcloud config configurations list | sed -E \
-        -e "s/(.* True .*)/${active}\1${reset}/g" \
-        -e "s/(.* False .*)/${inactive}\1${reset}/g"
-else
-    gcloud config configurations activate "$@"
-fi
+
+function _fzf_complete_gconf {
+    emulate -L zsh
+    setopt no_unset pipe_fail err_return warn_create_global
+
+    if [[ "$*" == 'gconf '* ]]; then
+        _fzf_complete --reverse "$@" < <(gcloud config configurations list | tail -n +2)
+    fi
+}
+
+
+function _fzf_complete_gconf_post {
+    emulate -L zsh
+    setopt no_unset pipe_fail err_return warn_create_global
+
+    awk '{ print $1 }'
+}
+
+
+function gconf {
+    emulate -L zsh
+    setopt no_unset pipe_fail err_return warn_create_global
+
+
+    typeset active='\x1b[1;36m'
+    typeset inactive='\x1b[2;36m'
+    typeset reset='\x1b[0m'
+
+    if [[ $# -eq 0 ]]; then
+        gcloud config configurations list | sed -E \
+            -e "s/(.* True .*)/${active}\1${reset}/g" \
+            -e "s/(.* False .*)/${inactive}\1${reset}/g"
+    else
+        gcloud config configurations activate "$@"
+    fi
+}
+
+
+gconf
