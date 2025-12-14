@@ -8,5 +8,5 @@
     typeset f; for f in "$XDG_RUNTIME_DIR"/zenlib-*.zsh; do
         . "$f" > /dev/null || true
     done
-    fpath=("$HOME/.local/share/zsh/zenlib/funcs.zwc" $fpath)
+    fpath=("$HOME/.local/share/zsh/zenlib/funcs.zwc" "$HOME/.local/share/zsh/zenlib/completion" $fpath)
 }

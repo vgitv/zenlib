@@ -1,0 +1,4 @@
+#compdef zzz
+local -a subcmds
+subcmds=('cat:description for c command' 'course:description for course' 'd:description for d command')
+_describe 'command' subcmds
