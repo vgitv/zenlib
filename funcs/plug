@@ -1,0 +1,25 @@
+#!/bin/zsh
+emulate -L zsh
+# setopt no_unset pipe_fail err_return warn_create_global
+
+case "$1" in
+    load)
+        shift
+        typeset org="$1"
+        typeset repo="$2"
+        typeset initfile="$3"
+
+        typeset plugdir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
+        [[ -d $plugdir ]] || mkdir -p "$plugdir"
+        [[ -d "${plugdir}/${repo}" ]] || git -C "$plugdir" clone --depth 1 -- "https://github.com/${org}/${repo}.git"
+        . "${plugdir}/${repo}/${initfile}"
+        ;;
+    update)
+        shift
+        print 'Not implemented yet'
+        ;;
+    *)
+        print "Invalid subcommand $1"
+        return 1
+        ;;
+esac
