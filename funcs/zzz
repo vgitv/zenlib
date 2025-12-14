@@ -1,5 +1,0 @@
-#!/bin/zsh
-emulate -L zsh
-setopt no_unset pipe_fail err_return warn_create_global
-
-print "$@"

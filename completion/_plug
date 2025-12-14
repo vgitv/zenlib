@@ -1,0 +1,4 @@
+#compdef plug
+local -a subcmds
+subcmds=('load:install if necessary and load a plugin' 'update:update all plugins')
+_describe 'command' subcmds
