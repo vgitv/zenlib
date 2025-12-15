@@ -1,0 +1,9 @@
+#compdef gconf
+
+typeset -a choices
+
+typeset f; for f in ~/.config/gcloud/configurations/*(.); do
+    choices+=("${f:t:s/config_//}:$(grep project "$f")")
+done
+
+_describe 'command' choices
