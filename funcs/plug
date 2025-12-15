@@ -2,6 +2,8 @@
 emulate -L zsh
 # setopt no_unset pipe_fail err_return warn_create_global
 
+typeset plugdir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
+
 case "$1" in
     load)
         shift
@@ -9,14 +11,16 @@ case "$1" in
         typeset repo="$2"
         typeset initfile="$3"
 
-        typeset plugdir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
         [[ -d $plugdir ]] || mkdir -p "$plugdir"
         [[ -d "${plugdir}/${repo}" ]] || git -C "$plugdir" clone --depth 1 -- "https://github.com/${org}/${repo}.git"
         . "${plugdir}/${repo}/${initfile}"
         ;;
     update)
-        shift
-        print 'Not implemented yet'
+        typeset plugin; for plugin in "$plugdir"/*(/); do
+            print "Updating plugin ${plugin}..."
+            git -C "$plugin" pull
+            print 'Done'
+        done
         ;;
     *)
         print "Invalid subcommand $1"
