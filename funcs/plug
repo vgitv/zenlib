@@ -1,6 +1,6 @@
 #!/bin/zsh
 emulate -L zsh
-# setopt no_unset pipe_fail err_return warn_create_global
+# No options here because we source external files
 
 typeset plugdir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
 
@@ -17,7 +17,7 @@ case "$1" in
         ;;
     update)
         typeset plugin; for plugin in "$plugdir"/*(/); do
-            print "Updating plugin ${plugin}..."
+            print "Updating plugin ${plugin:t}..."
             git -C "$plugin" pull
             print 'Done'
         done
