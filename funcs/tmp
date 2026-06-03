@@ -1,0 +1,13 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+# Create tmp directory with a gitignore that will ignore all file within
+
+if [[ -d tmp ]]; then
+    print 'tmp directory already exists'
+else
+    mkdir tmp
+    print '*' > tmp/.gitignore
+    tree -C --dirsfirst -a tmp
+fi

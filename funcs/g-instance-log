@@ -1,0 +1,18 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+# Tail google compute instance startup logs (including startup script logs)
+
+function get_instances {
+    gcloud compute instances list \
+        --format="table[no-heading](name,zone,status,networkInterfaces[0].accessConfigs[0].natIP)" \
+        --filter="status=RUNNING"
+}
+
+typeset instance="$(get_instances | fzf --layout=reverse --height=20 --nth=1 | awk '{ print $1 }')"
+[[ -z "$instance" ]] && return
+typeset log_file="$(date '+%Y%m%d%H%M%S')-${instance}.txt"
+trap "print Log file saved to $log_file" INT
+
+gcloud compute instances tail-serial-port-output "$instance" | tee ./"$log_file"

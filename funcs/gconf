@@ -1,0 +1,16 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+
+typeset active='\x1b[1;36m'
+typeset inactive='\x1b[2;36m'
+typeset reset='\x1b[0m'
+
+if [[ $# -eq 0 ]]; then
+    gcloud config configurations list | sed -E \
+        -e "s/(.* True .*)/${active}\1${reset}/g" \
+        -e "s/(.* False .*)/${inactive}\1${reset}/g"
+else
+    gcloud config configurations activate "$@"
+fi

@@ -1,0 +1,49 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+typeset -a git_args
+git_args=(--git-dir="${XDG_DATA_HOME:-$HOME/.local/share}/bareconfig" --work-tree="$HOME")
+
+if [[ $# -eq 0 ]]; then
+    # Search using fzf through all files tracked by the bareconfig repository
+
+    local previewer
+    if command -v batcat > /dev/null 2>&1; then
+        # On ubuntu
+        previewer=batcat
+    elif command -v bat > /dev/null 2>&1; then
+        # On arch
+        previewer=bat
+    else
+        echo 'ERROR: please install batcat'
+        return 1
+    fi
+
+    typeset -a config_files
+    config_files=$(git "${git_args[@]}" ls-tree -r --name-only --full-name --full-tree master)
+
+    typeset filepath="$(print -l $config_files | fzf --prompt='❯ ' --layout=reverse --scrollbar='█' --preview="$previewer --color=always --style=plain $HOME/{}")"
+
+    # Dont do anything if no file selected
+    if [[ -z "$filepath" ]]; then
+        return
+    fi
+
+    $EDITOR ~/"$filepath"
+
+    if grep -q zenlib-noautocommit ~/"$filepath"; then
+        print "No-autocommit label detected for $filepath"
+    else
+        if git "${git_args[@]}" status --short ~/"$filepath" | grep -q M; then
+            # File is modified
+            git "${git_args[@]}" add ~/"$filepath"
+            git "${git_args[@]}" commit -m "Update ${filepath}"
+            print 'Changes commited'
+        else
+            print 'Nothing to commit'
+        fi
+    fi
+else
+    git "${git_args[@]}" "$@"
+fi
