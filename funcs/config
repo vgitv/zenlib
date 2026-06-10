@@ -39,7 +39,8 @@ if [[ $# -eq 0 ]]; then
             # File is modified
             git "${git_args[@]}" add ~/"$filepath"
             git "${git_args[@]}" commit -m "Update ${filepath}"
-            print 'Changes commited'
+            git "${git_args[@]}" show "$(git "${git_args[@]}" rev-parse HEAD)"
+            print '\n\033[1;32mChanges commited\033[0m'
         else
             print 'Nothing to commit'
         fi
