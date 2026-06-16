@@ -55,6 +55,7 @@ fi
 # Try to source new Python venv
 if [[ -f pyproject.toml && -d "$(poetry env info --path)" ]]; then
     emulate -L zsh; source "$(poetry env info --path)"/bin/activate
+    print "Activate $VIRTUAL_ENV_PROMPT"
 elif [[ -d .venv ]]; then
     emulate -L zsh; source .venv/bin/activate
 elif [[ -d venv ]]; then
