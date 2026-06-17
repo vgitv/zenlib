@@ -18,9 +18,8 @@ Example:
 ```sh
 # Clone the repository anywhere
 git clone https://github.com/vgitv/zenlib
-cd zenlib
-make
-echo 'source "$HOME/.local/share/zsh/zenlib/zenlib.zsh"' >> "${ZDOTDIR:-HOME}/.zshrc"
+make -C zenlib
+echo 'source "$HOME/.local/share/zsh/zenlib/zenlib.zsh"' >> "${ZDOTDIR:-$HOME}/.zshrc"
 ```
 
 ## Update
