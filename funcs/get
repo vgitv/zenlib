@@ -1,0 +1,106 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+typeset program="$1"
+
+typeset latest_release_url
+typeset current_version
+typeset latest_version
+
+# Input from the read command gets assigned to REPLY variable. Declare to avoid warn_create_global warning.
+typeset REPLY
+
+case "$program" in
+    nvim)
+        # Do not use appimage because it cant handle man pages
+        latest_release_url="$(curl -s 'https://api.github.com/repos/neovim/neovim/releases/latest' | jq -r '.assets[].browser_download_url' | grep -E '/nvim-linux-x86_64\.tar\.gz$')"
+        current_version="$(nvim --version | grep -oP 'v\d+\.\d+\.\d+')"
+        latest_version="$(echo "$latest_release_url" | grep -oP 'v\d+\.\d+\.\d+')"
+
+        echo "Current nvim version: $current_version"
+        echo "Latest nvim version:  $latest_version"
+
+        if [[ "$current_version" = "$latest_version" ]]; then
+            echo 'Nvim is up to date, nothing to do'
+            return 0
+        fi
+
+        # Confirm
+        read -sq "?Install nvim from ${latest_release_url}? (y/n) "
+        echo
+
+        # Install
+        echo "Install new nvim version $latest_version"
+        sudo rm -rf /usr/local/bin/nvim /opt/nvim-linux-x86_64
+        curl -L "$latest_release_url" -o /tmp/nvim-linux-x86_64.tar.gz
+        sudo tar -C /opt -zxf /tmp/nvim-linux-x86_64.tar.gz
+        sudo chown -R root:root /opt/nvim-linux-x86_64
+        sudo ln -s /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
+        sudo rm -f /tmp/nvim-linux-x86_64.tar.gz
+
+        echo "Nvim updated to $latest_version"
+        ;;
+    kitty)
+        if command -v kitty > /dev/null 2>&1; then
+            current_version="$(kitty --version | grep -oP '\d+\.\d+\.\d+')"
+        else
+            current_version=NONE
+        fi
+
+        latest_version="$(curl -s 'https://api.github.com/repos/kovidgoyal/kitty/releases/latest' | jq -r '.assets[].browser_download_url' | head -n 1 | grep -oP 'v\d+\.\d+\.\d+')"
+
+        echo "Current Kitty version: v$current_version"
+        echo "Latest Kitty version:  $latest_version"
+
+        if [[ "v${current_version}" = "$latest_version" ]]; then
+            echo 'Kitty is up to date, nothing to do'
+            return 0
+        fi
+
+        # Confirm
+        read -sq "?Install latest kitty version? (y/n) "
+        echo
+
+        # Install
+        sudo true
+
+        typeset DEFAULT_CONFIG_CURRENT="$HOME/.config/kitty/default-${current_version}.conf"
+        typeset DEFAULT_CONFIG_LATEST="$HOME/.config/kitty/default-${latest_version}.conf"
+
+        if [[ "$current_version" != 'NONE' ]]; then
+            /usr/local/bin/kitty +runpy 'from kitty.config import *; print(commented_out_default_config())' > "$DEFAULT_CONFIG_CURRENT"
+        fi
+
+        # launch=n in order to avoid the installer to execute kitty (installer argument)
+        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
+
+        echo "Install new Kitty version $latest_version"
+        sudo rm -rf /usr/local/bin/kitty /opt/kitty.app
+        sudo mv ~/.local/kitty.app /opt
+        sudo chown -R root:root /opt/kitty.app
+        sudo chmod -R 755 /opt/kitty.app
+        sudo ln -s /opt/kitty.app/bin/kitty /usr/local/bin/kitty
+
+        /usr/local/bin/kitty +runpy 'from kitty.config import *; print(commented_out_default_config())' > "$DEFAULT_CONFIG_LATEST"
+
+        echo "Kitty updated to $latest_version"
+        kitty --version
+
+        if [[ "$current_version" != 'NONE' ]]; then
+            if diff --color=auto "$DEFAULT_CONFIG_CURRENT" "$DEFAULT_CONFIG_LATEST"; then
+                echo "Default configuration has evolved. Check: ${DEFAULT_CONFIG_LATEST}"
+            fi
+        fi
+        ;;
+    fzf)
+        print 'Not implemented yet'
+        ;;
+    gh)
+        print 'Not implemented yet'
+        ;;
+    *)
+        print "Unknown program ${program}"
+        return 1
+        ;;
+esac
