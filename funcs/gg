@@ -9,16 +9,13 @@ setopt null_glob
 # Python project driven by poetry, try to source the virtual environment.
 
 if [[ -z ${ZENLIB_GG_REPOLOC:-} ]]; then
-    zlog error 'You should define an array named ZENLIB_GG_REPOLOC to use this function'
+    zlog error 'You should define a variable named ZENLIB_GG_REPOLOC to use this function'
     return 1
 fi
 
 typeset -a all_repos
 
-typeset dir
-for dir in $ZENLIB_GG_REPOLOC; do
-    all_repos+=($dir/*(/))
-done
+all_repos+=($ZENLIB_GG_REPOLOC/*/*(/))
 
 if [[ -n ${ZENLIB_GG_SINGLES:-} ]]; then
     all_repos+=($ZENLIB_GG_SINGLES)
@@ -28,7 +25,8 @@ typeset -a fzf_args
 fzf_args=(
     --prompt='→ '
     --delimiter='/'
-    --with-nth='-1'
+    --with-nth='-2,-1'
+    --nth='-1'
     --height=20
     --layout=reverse
     --scrollbar='█'

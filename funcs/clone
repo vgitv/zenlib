@@ -12,8 +12,7 @@ FZF_ARGS=(--height=12 --prompt=' Github ❯ ' --layout=reverse --scrollbar='�
 typeset repo="$(jq -r '.[] | "\(.owner.login)/\(.name)"' "$REPO_LIST" | fzf "${FZF_ARGS[@]}")"
 [[ -z "$repo" ]] && return
 
-typeset repo_name="$(basename "${repo%.git}")"
-if [[ ! -d "$LOCATION/$repo_name" ]]; then
-    git clone "git@github.com:${repo}" "$LOCATION/$repo_name"
+if [[ ! -d "$LOCATION/${repo}" ]]; then
+    git clone "git@github.com:${repo}" "$LOCATION/$repo"
 fi
-cd "$LOCATION/$repo_name"
+cd "$LOCATION/$repo"
