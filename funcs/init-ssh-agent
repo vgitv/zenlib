@@ -19,5 +19,7 @@ fi
 # If the lifetime is reached for the identity, it should be added again.
 # Note that in this case the ssh-agent is still running, no need to launch another one (the agent does not expire).
 if ! ssh-add -L | grep -q "$public_key_hash"; then
-    ssh-add ~/.ssh/id_ed25519
+    # The $@ let you add other keys to the agent. This works because all keys has
+    # the same lifetime (as lons as you dont delete a key manually from the agent).
+    ssh-add ~/.ssh/id_ed25519 "$@"
 fi
