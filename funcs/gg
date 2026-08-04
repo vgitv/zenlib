@@ -40,12 +40,6 @@ if [[ -z "$repo" ]]; then
     return
 fi
 
-if [[ -r "$repo"/.python-version || -r "$repo"/pyproject.toml ]]; then
-    # pyenv is slow to init, I want it only when I work on python projects
-    print 'Init pyenv'
-    init-pyenv
-fi
-
 cd "$repo"
 
 # Try to deactivate Python venv
