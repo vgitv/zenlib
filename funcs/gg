@@ -9,14 +9,15 @@ setopt null_glob
 # Python project driven by poetry, try to source the virtual environment.
 
 if [[ -z ${ZENLIB_GG_REPOLOC:-} ]]; then
-    zlog error 'You should define a variable named ZENLIB_GG_REPOLOC to use this function'
-    return 1
+    ZENLIB_GG_REPOLOC="$HOME/Code"
 fi
 
 typeset -a all_repos
 
 all_repos+=($ZENLIB_GG_REPOLOC/*/*(/))
 
+# Single repositories outside of ZENLIB_GG_REPOLOC path (like ~/.config/nvim for instance)
+# If neede, set this variable in .zshrc for instance
 if [[ -n ${ZENLIB_GG_SINGLES:-} ]]; then
     all_repos+=($ZENLIB_GG_SINGLES)
 fi
