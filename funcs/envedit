@@ -1,0 +1,37 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+typeset toplevel
+typeset reponame
+typeset relative_path
+typeset envrc
+# needed by read command, to avoid global var warning
+typeset REPLY
+
+toplevel=$(git rev-parse --show-toplevel)
+relative_path="${PWD#${toplevel:h}/}"
+envrc="env/${relative_path}/envrc"
+
+print "toplevel: $toplevel"
+print "relative_path: $relative_path"
+
+if [[ -r .envrc ]]; then
+    print 'File .envrc already exists'
+else
+
+    read -sq "?Generate .envrc file and associated pass entry ${envrc}? (y/n) "
+    print 'Generate .envrc file'
+    {
+        print -n 'eval "$(pass '
+        print -n "$envrc"
+        print ')"'
+    } > .envrc
+    cat .envrc
+
+    print 'Direnv allow .envrc file'
+    direnv allow .envrc
+fi
+
+pass edit "$envrc"
+direnv reload
