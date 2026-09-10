@@ -1,0 +1,40 @@
+#!/bin/zsh
+emulate -L zsh
+setopt no_unset pipe_fail err_return warn_create_global
+
+
+# pad base64 with '=' if needed
+function pad {
+    typeset input="$1"
+
+    typeset r="$((${#input} % 4))"
+    if [[ $r != 0 ]]; then
+        typeset len="$((${#input} - $r + 4))"
+        print -n ${(r(len)(=))input}
+    else
+        print -n "$input"
+    fi
+}
+
+typeset jwt="$1"
+
+if [[ ! $jwt = *.* ]]; then
+    print 'Decode input'
+    jwt="$(print -n "$jwt" | base64 -d)"
+    print $jwt
+else
+    print 'Plain JWT'
+fi
+
+typeset -a token=("${(s:.:)jwt}")
+typeset i
+
+for i in $(seq 1 $COLUMNS); do
+    print -n '─'
+done
+
+print -n "\nHeader: "
+print -n "$(pad ${token[1]})" | base64 -d | jq --sort-keys .
+
+print -n "\nPayload: "
+print -n "$(pad ${token[2]})" | base64 -d | jq --sort-keys .
