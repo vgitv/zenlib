@@ -30,7 +30,7 @@ fzf_args=(
     --nth='-1'
     --height=20
     --layout=reverse
-    --scrollbar='█'
+    --no-scrollbar
     --preview='tree -L 1 -C --dirsfirst {}'
 )
 
