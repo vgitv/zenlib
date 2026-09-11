@@ -22,14 +22,37 @@ if [[ -n ${ZENLIB_GG_SINGLES:-} ]]; then
     all_repos+=($ZENLIB_GG_SINGLES)
 fi
 
+typeset fzf_colors
+fzf_colors=(
+    input-border:#ff966c
+    input-label:#ff966c
+    list-border:#589ed7
+    list-label:#589ed7
+    preview-border:#589ed7
+    preview-label:#589ed7
+    hl:#61b4f5
+    current-hl:#61b4f5
+    current-bg:#2d3f76
+    gutter:#222436
+    current-fg:-1:bold
+    pointer:-1
+)
+
 typeset -a fzf_args
 fzf_args=(
     --prompt='→ '
     --delimiter='/'
     --with-nth='-2,-1'
     --nth='-1'
-    --height=20
-    --layout=reverse
+    --input-border='rounded' \
+    --input-label=' Filter ' \
+    --list-border='rounded' \
+    --list-label=' Repositories ' \
+    --preview-border='rounded' \
+    --preview-label=' Preview ' \
+    --no-info \
+    --color="${(j:,:)fzf_colors}" \
+    --margin='10%' \
     --no-scrollbar
     --preview='tree -L 1 -C --dirsfirst {}'
 )
