@@ -33,7 +33,6 @@ fzf_colors=(
     hl:#61b4f5
     current-hl:#61b4f5
     current-bg:#2d3f76
-    gutter:#222436
     current-fg:-1:bold
     pointer:-1
 )
@@ -41,18 +40,19 @@ fzf_colors=(
 typeset -a fzf_args
 fzf_args=(
     --prompt='→ '
+    --gutter=' '
     --delimiter='/'
     --with-nth='-2,-1'
     --nth='-1'
-    --input-border='rounded' \
-    --input-label=' Filter ' \
-    --list-border='rounded' \
-    --list-label=' Repositories ' \
-    --preview-border='rounded' \
-    --preview-label=' Preview ' \
-    --no-info \
-    --color="${(j:,:)fzf_colors}" \
-    --margin='10%' \
+    --input-border='rounded'
+    --input-label=' Filter '
+    --list-border='rounded'
+    --list-label=' Repositories '
+    --preview-border='rounded'
+    --preview-label=' Preview '
+    --no-info
+    --color="${(j:,:)fzf_colors}"
+    --margin='10%'
     --no-scrollbar
     --preview='tree -L 1 -C --dirsfirst {}'
 )
