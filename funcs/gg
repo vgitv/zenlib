@@ -30,6 +30,8 @@ fzf_colors=(
     list-label:#589ed7
     preview-border:#589ed7
     preview-label:#589ed7
+    header-border:#c3e88d
+    header-label:#c3e88d
     hl:#61b4f5
     current-hl:#61b4f5
     current-bg:#2d3f76
@@ -52,12 +54,17 @@ fzf_args=(
     --list-label=' Repositories '
     --preview-border='rounded'
     --preview-label=' Preview '
+    --header-border='rounded'
+    --header-label=' Branch '
     --no-info
     --color="${(j:,:)fzf_colors}"
     --margin='10%'
     --no-scrollbar
     --info='inline-right'
+    --cycle
+    --no-mouse
     --preview='tree -L 1 -C --dirsfirst {}'
+    --bind='focus:+transform-header:git -C {} branch --show-current || echo "No branch checked out"'
 )
 
 typeset repo="$(print -l $all_repos | fzf "${fzf_args[@]}")"
