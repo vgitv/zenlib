@@ -64,7 +64,7 @@ fzf_args=(
     --cycle
     --no-mouse
     --preview='tree -L 1 -C --dirsfirst {}'
-    --bind='focus:+transform-header:git -C {} branch --show-current || echo "No branch checked out"'
+    --bind='focus:transform-header:git -C {} branch --show-current || echo "No branch checked out"'
 )
 
 typeset repo="$(print -l $all_repos | fzf "${fzf_args[@]}")"
