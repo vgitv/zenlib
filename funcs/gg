@@ -35,7 +35,7 @@ fzf_colors=(
     hl:#61b4f5
     current-hl:#61b4f5
     current-bg:#2d3f76
-    current-fg:-1:bold
+    current-fg:#d9def2:bold
     pointer:-1
     info:#545c7e
 )
@@ -43,7 +43,6 @@ fzf_colors=(
 typeset -a fzf_args
 fzf_args=(
     --prompt='→ '
-    --pointer='→'
     --gutter=' '
     --delimiter='/'
     --with-nth='-2,-1'
