@@ -8,9 +8,14 @@ setopt null_glob
 # Select a Git repository using fzf and go to that directory. If it's a
 # Python project driven by poetry, try to source the virtual environment.
 
+typeset -a ZENLIB_GG_REPOLOC
+typeset -a ZENLIB_GG_SINGLES
+
 if [[ -z ${ZENLIB_GG_REPOLOC:-} ]]; then
     ZENLIB_GG_REPOLOC="$HOME/Code"
 fi
+
+ZENLIB_GG_SINGLES=(~/.config/nvim ~/.vim)
 
 typeset -a all_repos
 
@@ -74,6 +79,8 @@ if [[ -z "$repo" ]]; then
 fi
 
 cd "$repo"
+print "\033[34mOwner  \033[32m$(git remote get-url origin | sed -E 's;.*github\.com.(.*)/.*;\1;g')"
+print "\033[34mRepo   \033[32m${repo:t}"
 
 # Try to deactivate Python venv
 if command -v deactivate > /dev/null 2>&1; then
@@ -87,7 +94,5 @@ fi
 # export POETRY_VIRTUALENVS_IN_PROJECT='true'
 if [[ -d .venv ]]; then
     emulate -L zsh; source .venv/bin/activate
-    print "Activate $VIRTUAL_ENV_PROMPT"
+    print "\033[34mVenv   \033[32m${VIRTUAL_ENV_PROMPT}"
 fi
-
-print -D "$PWD"
