@@ -46,13 +46,10 @@ typeset -a fzf_args
 fzf_args=(
     --prompt='→ '
     --gutter=' '
-    --delimiter='/'
-    --with-nth='-2,-1'
-    --nth='-1'
     --input-border='rounded'
     --input-label=' Filter '
     --list-border='rounded'
-    --list-label=' Repositories '
+    --list-label=' Config files '
     --preview-border='rounded'
     --preview-label=' Preview '
     --no-info
