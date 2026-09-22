@@ -5,46 +5,89 @@ setopt no_unset pipe_fail err_return warn_create_global
 typeset -a git_args
 git_args=(--git-dir="${XDG_DATA_HOME:-$HOME/.local/share}/bareconfig" --work-tree="$HOME")
 
-if [[ $# -eq 0 ]]; then
-    # Search using fzf through all files tracked by the bareconfig repository
-
-    local previewer
-    if command -v batcat > /dev/null 2>&1; then
-        # On ubuntu
-        previewer=batcat
-    elif command -v bat > /dev/null 2>&1; then
-        # On arch
-        previewer=bat
-    else
-        echo 'ERROR: please install batcat'
-        return 1
-    fi
-
-    typeset -a config_files
-    config_files=$(git "${git_args[@]}" ls-tree -r --name-only --full-name --full-tree master)
-
-    typeset filepath="$(print -l $config_files | fzf --prompt='❯ ' --layout=reverse --scrollbar='█' --preview="$previewer --color=always --style=plain $HOME/{}")"
-
-    # Dont do anything if no file selected
-    if [[ -z "$filepath" ]]; then
-        return
-    fi
-
-    $EDITOR ~/"$filepath"
-
-    if grep -q zenlib-noautocommit ~/"$filepath"; then
-        print "No-autocommit label detected for $filepath"
-    else
-        if git "${git_args[@]}" status --short ~/"$filepath" | grep -q M; then
-            # File is modified
-            git "${git_args[@]}" add ~/"$filepath"
-            git "${git_args[@]}" commit -m "Update ${filepath}"
-            git "${git_args[@]}" show "$(git "${git_args[@]}" rev-parse HEAD)"
-            print '\n\033[1;32mChanges commited\033[0m'
-        else
-            print 'Nothing to commit'
-        fi
-    fi
-else
+if [[ $# -gt 0 ]]; then
     git "${git_args[@]}" "$@"
+    return
+fi
+
+# Search using fzf through all files tracked by the bareconfig repository
+
+local previewer
+if command -v batcat > /dev/null 2>&1; then
+    # On ubuntu
+    previewer=batcat
+elif command -v bat > /dev/null 2>&1; then
+    # On arch
+    previewer=bat
+else
+    echo 'ERROR: please install batcat'
+    return 1
+fi
+
+typeset fzf_colors
+fzf_colors=(
+    input-border:#ff966c
+    input-label:#ff966c
+    list-border:#589ed7
+    list-label:#589ed7
+    preview-border:#589ed7
+    preview-label:#589ed7
+    header-border:#c3e88d
+    header-label:#c3e88d
+    hl:#61b4f5
+    current-hl:#61b4f5
+    current-bg:#2d3f76
+    current-fg:#d9def2:bold
+    pointer:-1
+    info:#545c7e
+)
+
+typeset -a fzf_args
+fzf_args=(
+    --prompt='→ '
+    --gutter=' '
+    --delimiter='/'
+    --with-nth='-2,-1'
+    --nth='-1'
+    --input-border='rounded'
+    --input-label=' Filter '
+    --list-border='rounded'
+    --list-label=' Repositories '
+    --preview-border='rounded'
+    --preview-label=' Preview '
+    --no-info
+    --color="${(j:,:)fzf_colors}"
+    --margin='10%'
+    --no-scrollbar
+    --info='inline-right'
+    --cycle
+    --no-mouse
+    --preview="$previewer --color=always --style=plain $HOME/{}"
+    --ellipsis='󰇘'
+)
+
+typeset -a config_files
+config_files=$(git "${git_args[@]}" ls-tree -r --name-only --full-name --full-tree master)
+
+typeset filepath="$(print -l $config_files | fzf "${fzf_args[@]}")"
+
+# Dont do anything if no file selected
+if [[ -z "$filepath" ]]; then
+    return
+fi
+
+$EDITOR ~/"$filepath"
+
+if grep -q zenlib-noautocommit ~/"$filepath"; then
+    print "No-autocommit label detected for $filepath"
+else
+    if git "${git_args[@]}" status --short ~/"$filepath" | grep -q M; then
+        # File is modified
+        git "${git_args[@]}" add ~/"$filepath"
+        git "${git_args[@]}" commit -m "Update ${filepath}"
+        git "${git_args[@]}" show "$(git "${git_args[@]}" rev-parse HEAD)"
+        print '\n\033[1;32mChanges commited\033[0m'
+    else
+        print 'Nothing to commit'
+    fi
 fi
