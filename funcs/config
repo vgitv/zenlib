@@ -79,6 +79,12 @@ if grep -q zenlib-noautocommit ~/"$filepath"; then
     print "No-autocommit label detected for $filepath"
 else
     if git "${git_args[@]}" status --short ~/"$filepath" | grep -q M; then
+        git "${git_args[@]}" diff ~/"$filepath"
+        typeset REPLY
+        if ! read -sq "?Commit changes? (y/n) "; then
+            print '\n\033[1;33mChanges not commited\033[0m'
+            return
+        fi
         # File is modified
         git "${git_args[@]}" add ~/"$filepath"
         git "${git_args[@]}" commit -m "Update ${filepath}"
