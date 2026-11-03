@@ -59,7 +59,7 @@ fzf_args=(
     --info='inline-right'
     --cycle
     --no-mouse
-    --preview="$previewer --color=always --style=plain $HOME/{}"
+    --preview="$previewer --color=always --style=plain --theme=tokyonight_moon $HOME/{}"
     --ellipsis='󰇘'
 )
 
